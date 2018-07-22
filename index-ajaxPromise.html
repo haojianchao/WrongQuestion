@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>错题系统</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="libs/common.css">
+
+</head>
+<body>	
+	
+	<div class="container-fluid">
+		<h3 class="wq-title"> 
+			<span class="logo">
+				<img src="http://www.qfedu.com/images/new_logo.png" alt="">
+			</span>
+			易错内容
+			<button type="button" class="btn" data-toggle="modal" data-target=".wq-add">
+
+					<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+				添加错题
+			</button>
+			
+		</h3>
+		
+		<!-- 添加错题部分 -->
+		<div class="modal fade wq-add">  
+		  <div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		    	<!--细节划分-->
+		    	<h4>请详细填写重点信息:</h4>
+				<div class="form-group">
+				    <label for="wq-content">易错内容</label>
+				    <input type="text" class="form-control" id="wq-content" placeholder="易错内容" name="wq-content">
+				</div>
+				<div class="form-group">	
+				    <label for="wq-where">错在哪</label>
+				    <textarea id="wq-where" class="form-control" rows="2" placeholder="请详细描述错误位置" name="wq-where"></textarea>
+				</div>
+				<div class="form-group">
+				    <label for="title">你的想法</label>
+				    <textarea id="wq-idea" class="form-control" rows="2" placeholder="你的感悟" name="wq-idea"></textarea>
+				</div>
+
+				<div class="text-center">
+					<button type="button" class="btn btn-success" data-dismiss="modal" id="wq-save-question">提交</button>
+				</div>
+		    </div>
+		  </div>
+		</div>
+		
+		<!--修改错题部分-->
+		<div class="modal fade wq-upt" id="ss">
+		  <div class="modal-dialog modal-lg">
+		    <div class="modal-content" style="padding:20px;">
+		    	<!--细节划分-->
+		    	<h4>请确定要修改的内容:</h4>
+				<div class="form-group">
+				    <label for="wq-content2">易错内容</label>
+				    <input type="text" class="form-control" id="ss-content2" placeholder="易错内容" name="wq-content2" >
+				</div>
+				<div class="form-group">
+				    <label for="wq-where2">错在哪</label>
+				    <textarea id="ss-where2" class="form-control" rows="2" placeholder="请详细描述错误位置" name="wq-where2"></textarea>
+				</div>
+				<div class="form-group">
+				    <label for="title2">你的想法</label>
+				    <textarea id="ss-idea2" class="form-control" rows="2" placeholder="你的感悟" name="wq-idea2"></textarea>
+				    <input type="hidden"  name="ss-id2" id="ss-id2" value=""/>
+				</div>
+
+				<div class="text-center">
+					<button type="button"  class="btn btn-success" data-dismiss="modal" id="wq-save-question_upt">提交</button>
+				</div>
+		    </div>
+		  </div>
+		</div>
+		
+		
+		<!--错题表格-->
+		<div class="row">
+			<table class="table table-bordered table-hover wq-main-table ">	
+				<!--错题项目-->
+				<thead>
+					<tr>
+						<th class="col-md-1 text-center">#</th>
+						<th class="col-md-3 text-center">易错内容</th>
+						<th class="col-md-3 text-center">错在哪</th>
+						<th class="col-md-3 text-center">你的想法</th>
+						<th class="col-md-1 text-center">删除</th>
+						<th class="col-md-1 text-center">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!--<tr class="text-center middle">
+						<td>1</td>
+						<td>闭包</td>
+						<td>闭包使用不清晰</td>
+						<td>闭包的原理略有模糊现在已经了解...</td>
+						<td>
+							<button class="btn">删除</button>
+						</td>
+						<td>
+							<button class="btn" data-toggle="modal" data-target=".wq-upt">
+								<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+							</button>
+						</td>
+					</tr>-->			
+				</tbody>
+			</table>	
+		</div>
+	</div>
+
+</body>
+</html>
+<script src="libs/jquery.js"></script>
+<script src="libs/bootstrap.js"></script>
+<script src="js/public.js"></script>
+<script src="js/ajax.js"></script>
+ <script>
+ 	window.onload=function(){
+ 		var tbody=document.querySelector("tbody");
+ 		var url="http://localhost/wrongQuestion1803/php/wrong.php";
+ 		var pro=ajaxPromise(url);
+ 		pro.then(function(msg){
+ 			//console.log(typeof msg);
+ 			var arr=JSON.parse(msg);
+ 			var str="";
+   			for (var i=0;i<arr.length;i++) {
+   				str+=`<tr class="text-center middle">
+						<td>${arr[i].id}</td>
+						<td>${arr[i].icontent}</td>
+						<td>${arr[i].iwhere}</td>
+						<td>${arr[i].idea}</td>
+						<td>
+							<button class="btn">删除</button>
+						</td>
+						<td>
+							<button class="btn" data-toggle="modal" data-target=".wq-upt">
+								<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+							</button>
+						</td>
+					</tr>`;
+   			}
+   			tbody.innerHTML=str;
+ 		})
+ 	}
+ 	
+ </script>
+	 
